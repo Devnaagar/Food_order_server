@@ -1,0 +1,59 @@
+body {
+    display: flex;
+    flex-direction: column;
+}
+.content {
+    flex: 1;
+    margin-top: auto;
+    height: 70vh;
+}
+.foot{
+    color: aliceblue;
+    height: 75px;
+}
+.texts{
+    margin-top: 0px;
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+    input[type="password"], input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+}
+
+.eye-icon .eye {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.eye-icon .slash {
+    position: absolute;
+    top: 0;
+    left: 10px;
+    width: 5%;
+    height: 100%;
+    background: black;
+    transform: rotate(45deg);
+    display: none;
+}
+
+.eye-icon.visible .slash {
+    display: block;
+}
