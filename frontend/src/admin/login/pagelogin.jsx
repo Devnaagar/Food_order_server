@@ -23,7 +23,7 @@ function Login(){
                             <div class="card">
                                 <div class="card-body ">
                                     <h2 class="text-center">Admin Login</h2><br/>
-                                    <form action="http://localhost:3115" method="post">
+                                    <form action="http://localhost:3115/admin" method="post">
                                         <div class="form-group my-1">
                                             <label for="email"><h5>Email</h5></label>
                                             <input type="email" class="form-control" id="email" name="email" required />
