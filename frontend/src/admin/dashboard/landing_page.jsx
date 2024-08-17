@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Header from "../defaults/header.jsx";
 import Footer from "../defaults/footer.jsx";
 
-function Login(){
+function Landing_page(){
     // useEffect(() => {
     //     axios.post('http://localhost:3115/admin')
     //         .then(response => {
@@ -57,4 +57,4 @@ function Login(){
     )
 }
 
-export default Login;
+export default Landing_page;
