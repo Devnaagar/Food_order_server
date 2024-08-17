@@ -12,8 +12,10 @@ import Admin from "../components/admin/Admin.js";
 //         res.redirect('/admin');
 //     }
 // });
+router.get('/admin', Admin.login);
 
-router.post('/', Admin.login);
+
+router.post('/admin', Admin.login);
 // router.get('/dashboard', Dashboard.dashboard);
 router.post('/logout', (req, res) => {
     req.session.destroy(err => {
