@@ -22,7 +22,10 @@ app.use(session({
   secret: 'your-secret-key',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false }
+  cookie: {
+    secure: false,
+    maxAge: null 
+  }
 }));
 
 //static files
