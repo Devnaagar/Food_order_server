@@ -5,33 +5,28 @@ class Admin {
         const { email, password } = req.body;
         try {
             const admin = await AdminInfo.findOne({ email: email });
-    
             if (admin) {
-                
                 if (password === admin.password.toString()) {
                     req.session.adminId = admin._id.toString();
-                    console.log("Successfully logged in");
-                    res.redirect("http://localhost:5174/dashboard");
+                    return res.status(200).json({ message: "Login successful", redirectUrl: "/dashboard" });
                 } else {
-                    console.log("Invalid password");
+                    return res.status(401).json({ message: "Invalid password" });
                 }
             } else {
-                console.log("Admin not found");
-                res.redirect("http://localhost:5174/admin");
+                return res.status(401).json({ message: "Invalid email" });
             }
         } catch (error) {
             console.log(error);
-            res.status(500).send('Internal server error');
+            return res.status(500).json({ message: 'Internal server error' });
         }
     }
-    
 
     static logout = (req, res) => {
-        req.session.destroy((err) => {
+        req.session.destroy(err => {
             if (err) {
-                return res.status(500).send('Failed to logout');
+                return res.status(500).send('Error logging out');
             }
-            res.redirect('http://localhost:5174/admin');
+            res.redirect('/admin');
         });
     }
 }
