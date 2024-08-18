@@ -1,18 +1,27 @@
 import "../admin.css";
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import Cookies from 'js-cookie';
 import Header from "../defaults/header.jsx";
 import Footer from "../defaults/footer.jsx";
 
 function Login(){
-    // useEffect(() => {
-    //     axios.post('http://localhost:3115/admin')
-    //         .then(response => {
-    //             setStores(response.data);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching store data:', error);
-    //         });
-    // }, []);
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    };
+
+    const handleCheckboxChange = (e) => {
+        const isChecked = e.target.checked;
+        setRememberMe(isChecked);
+
+        if (isChecked) {
+        Cookies.set('rememberMe', 'true', { expires: 30 });
+        } else {
+        Cookies.remove('rememberMe');
+        }
+    }
     return(
         <>
             <Header/>
@@ -30,17 +39,18 @@ function Login(){
                                         </div>
                                         <div class="form-group my-1">
                                             <label for="password"><h5>Password</h5></label>
-                                            <div class="password-container">
-                                                <input type="password" class="form-control" id="password" name="password"required/>
-                                                <span id="togglePassword" class="eye-icon">
-                                                    <span class="eye">👁️</span>
-                                                    <span class="slash"></span>
+                                            <div className="password-container" style={{ position:'relative' }}>
+                                                <input type={passwordVisible ?'text':'password'} className="form-control" id="password" name="password"required/>
+                                                <span id="togglePassword" className="eye-icon" onClick={togglePasswordVisibility} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer',}}> 
+                                                    {passwordVisible ? '🙈' : '👁️'}
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="form-group form-check my-3">
-                                            <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me" />
-                                            <label class="form-check-label" for="remember_me">Remember Me</label>
+                                        <div className="form-group form-check my-3">
+                                            <input type="checkbox" className="form-check-input" id="remember_me" name="remember_me" checked={rememberMe} onChange={handleCheckboxChange}/>
+                                            <label className="form-check-label" htmlFor="remember_me">
+                                                Remember Me
+                                            </label>
                                         </div>
                                         <div className="row justify-content-center">
                                             <button type="submit" class="btn btn-primary col-lg-3">Login</button>

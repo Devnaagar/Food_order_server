@@ -31,5 +31,5 @@ app.use(express.static(join(process.cwd(),"public")));
 app.use("/",web);
 
 app.listen(port,()=>{
-    console.log(`Server listening at http://localhost:${port}`);
+  console.log(`Server listening at http://localhost:${port}`);
 })

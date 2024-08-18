@@ -1,29 +1,23 @@
 import express from "express";
+import Admin from "../components/admin/Admin.js";
+import Dashboard from "../components/admin/Dashboard.js";
+
 const router = express.Router();
 
-import Admin from "../components/admin/Admin.js";
+function isAuthenticated(req, res, next) {
+    if (req.session.adminId) {
+        return next();
+    } else {
+        return res.redirect('/admin');
+    }
+}
 
-
-// router.get('/', (req, res) => {
-
-//     if (req.session.adminId) {
-//         console.log("successfully enter");
-//     } else {
-//         res.redirect('/admin');
-//     }
-// });
-router.get('/admin', Admin.login);
-
+router.get('/dashboard', isAuthenticated, Dashboard.dashboard); 
+router.get('/admin', (req, res) => {
+    res.render('login'); 
+});
 
 router.post('/admin', Admin.login);
-// router.get('/dashboard', Dashboard.dashboard);
-router.post('/logout', (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            return res.status(500).send('Error logging out');
-        }
-        res.redirect('/admin');
-    });
-});
+router.post('/logout', Admin.logout);
 
 export default router;
