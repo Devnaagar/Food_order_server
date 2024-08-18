@@ -1,12 +1,15 @@
 import "../admin.css";
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
+import ToastComponent from './Toast.jsx';
 import Header from "../defaults/header.jsx";
 import Footer from "../defaults/footer.jsx";
 
-function Login(){
+function Login() {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
+    const [toastVisible, setToastVisible] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
 
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
@@ -17,31 +20,71 @@ function Login(){
         setRememberMe(isChecked);
 
         if (isChecked) {
-        Cookies.set('rememberMe', 'true', { expires: 30 });
+            Cookies.set('rememberMe', 'true', { expires: 30 });
         } else {
-        Cookies.remove('rememberMe');
+            Cookies.remove('rememberMe');
         }
-    }
-    return(
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        const email = e.target.email.value;
+        const password = e.target.password.value;
+    
+        try {
+            const response = await fetch('http://localhost:3115/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+    
+            const data = await response.json();
+    
+            if (response.ok) {
+                sessionStorage.setItem('username', data.username);
+                sessionStorage.setItem('admin_id', data.admin_id);
+                if (data.admin_id) {
+                    setTimeout(() => {
+                        window.location.href = data.redirectUrl;
+                    }, 4000);
+                } else {
+                    setToastMessage('Login successful but admin_id is missing.');
+                    setToastVisible(true);
+                }
+            } else {
+                setToastMessage(data.message || 'Login failed');
+                setToastVisible(true);
+            }
+        } catch (error) {
+            console.error('Error during login:', error);
+            setToastMessage('An error occurred. Please try again.');
+            setToastVisible(true);
+        }
+    };
+
+    return (
         <>
-            <Header/>
-            <div class="content d-flex justify-content-center align-items-center">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-6 col-md-12 col-sm-12 col-12">
-                            <div class="card">
-                                <div class="card-body ">
-                                    <h2 class="text-center">Admin Login</h2><br/>
-                                    <form action="http://localhost:3115/admin" method="post">
-                                        <div class="form-group my-1">
-                                            <label for="email"><h5>Email</h5></label>
-                                            <input type="email" class="form-control" id="email" name="email" required />
+            <Header />
+            <div className="content d-flex justify-content-center align-items-center">
+                <div className="container">
+                    <div className="row justify-content-center">
+                        <div className="col-lg-6 col-md-12 col-sm-12 col-12">
+                            <div className="card">
+                                <div className="card-body">
+                                    <h2 className="text-center">Admin Login</h2><br />
+                                    <form onSubmit={handleSubmit}>
+                                        <div className="form-group my-1">
+                                            <label htmlFor="email"><h5>Email</h5></label>
+                                            <input type="email" className="form-control" id="email" name="email" required/>
                                         </div>
-                                        <div class="form-group my-1">
-                                            <label for="password"><h5>Password</h5></label>
+                                        <div className="form-group my-1">
+                                            <label htmlFor="password"><h5>Password</h5></label>
                                             <div className="password-container" style={{ position:'relative' }}>
-                                                <input type={passwordVisible ?'text':'password'} className="form-control" id="password" name="password"required/>
-                                                <span id="togglePassword" className="eye-icon" onClick={togglePasswordVisibility} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer',}}> 
+                                                <input type={passwordVisible ? 'text' : 'password'} className="form-control" id="password" name="password"required/>
+                                                <span id="togglePassword" className="eye-icon" onClick={togglePasswordVisibility} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer', }}>
                                                     {passwordVisible ? '🙈' : '👁️'}
                                                 </span>
                                             </div>
@@ -53,18 +96,21 @@ function Login(){
                                             </label>
                                         </div>
                                         <div className="row justify-content-center">
-                                            <button type="submit" class="btn btn-primary col-lg-3">Login</button>
+                                            <button type="submit" className="btn btn-primary col-lg-3">
+                                                Login
+                                            </button>
                                         </div>
                                     </form>
+                                    <ToastComponent show={toastVisible} message={toastMessage} onClose={() => setToastVisible(false)}/>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </>
-    )
+    );
 }
 
 export default Login;

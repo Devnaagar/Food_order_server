@@ -8,7 +8,14 @@ class Admin {
             if (admin) {
                 if (password === admin.password.toString()) {
                     req.session.adminId = admin._id.toString();
-                    return res.status(200).json({ message: "Login successful", redirectUrl: "/dashboard" });
+                    if (req.session && req.session.adminId) {
+                        return res.status(200).json({ 
+                            message: "Login successful", 
+                            redirectUrl: "/dashboard", 
+                            username: admin.name, 
+                            admin_id: admin._id
+                        });
+                    }
                 } else {
                     return res.status(401).json({ message: "Invalid password" });
                 }
@@ -20,7 +27,7 @@ class Admin {
             return res.status(500).json({ message: 'Internal server error' });
         }
     }
-
+    
     static logout = (req, res) => {
         req.session.destroy(err => {
             if (err) {
