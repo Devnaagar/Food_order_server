@@ -18,7 +18,6 @@ function Login() {
     const handleCheckboxChange = (e) => {
         const isChecked = e.target.checked;
         setRememberMe(isChecked);
-
         if (isChecked) {
             Cookies.set('rememberMe', 'true', { expires: 30 });
         } else {
@@ -28,10 +27,8 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
         const email = e.target.email.value;
         const password = e.target.password.value;
-    
         try {
             const response = await fetch('http://localhost:3115/login', {
                 method: 'POST',
@@ -40,9 +37,7 @@ function Login() {
                 },
                 body: JSON.stringify({ email, password }),
             });
-    
             const data = await response.json();
-    
             if (response.ok) {
                 sessionStorage.setItem('username', data.username);
                 sessionStorage.setItem('admin_id', data.admin_id);
