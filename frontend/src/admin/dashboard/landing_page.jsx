@@ -4,13 +4,7 @@ import Toast from '../login/Toast.jsx';
 
 function Landing_page() {
     const [showToast, setShowToast] = useState(false);
-    // const [username, setUsername] = useState('');
-
     useEffect(() => {
-        // const storedUsername = sessionStorage.getItem('username');
-        // if (storedUsername) {
-        //     setUsername(storedUsername);
-        // }
         setShowToast(true);
     }, []);
 
