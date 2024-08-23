@@ -41,14 +41,11 @@ function Login() {
             if (response.ok) {
                 sessionStorage.setItem('username', data.username);
                 sessionStorage.setItem('admin_id', data.admin_id);
-                if (data.admin_id) {
-                    setTimeout(() => {
-                        window.location.href = data.redirectUrl;
-                    }, 4000);
-                } else {
-                    setToastMessage('Login successful but admin_id is missing.');
-                    setToastVisible(true);
-                }
+                sessionStorage.setItem('token', data.token); // Store the token
+                // Redirect immediately or after a short delay if needed
+                setTimeout(() => {
+                    window.location.href = data.redirectUrl;
+                }, 500); // 500ms delay for smoother UX
             } else {
                 setToastMessage(data.message || 'Login failed');
                 setToastVisible(true);
