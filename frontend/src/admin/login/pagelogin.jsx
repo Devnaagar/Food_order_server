@@ -1,28 +1,18 @@
 import "../admin.css";
 import React, { useState } from 'react';
-import Cookies from 'js-cookie';
 import ToastComponent from './Toast.jsx';
 import Header from "../defaults/header.jsx";
+import { Lines } from 'react-preloaders';
 import Footer from "../defaults/footer.jsx";
 
 function Login() {
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const [rememberMe, setRememberMe] = useState(false);
     const [toastVisible, setToastVisible] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
-    };
-
-    const handleCheckboxChange = (e) => {
-        const isChecked = e.target.checked;
-        setRememberMe(isChecked);
-        if (isChecked) {
-            Cookies.set('rememberMe', 'true', { expires: 30 });
-        } else {
-            Cookies.remove('rememberMe');
-        }
     };
 
     const handleSubmit = async (e) => {
@@ -39,13 +29,13 @@ function Login() {
             });
             const data = await response.json();
             if (response.ok) {
+                setLoading(true);
                 sessionStorage.setItem('username', data.username);
                 sessionStorage.setItem('admin_id', data.admin_id);
-                sessionStorage.setItem('token', data.token); // Store the token
-                // Redirect immediately or after a short delay if needed
+                sessionStorage.setItem('token', data.token);
                 setTimeout(() => {
                     window.location.href = data.redirectUrl;
-                }, 500); // 500ms delay for smoother UX
+                }, 3000);
             } else {
                 setToastMessage(data.message || 'Login failed');
                 setToastVisible(true);
@@ -81,13 +71,7 @@ function Login() {
                                                 </span>
                                             </div>
                                         </div>
-                                        <div className="form-group form-check my-3">
-                                            <input type="checkbox" className="form-check-input" id="remember_me" name="remember_me" checked={rememberMe} onChange={handleCheckboxChange}/>
-                                            <label className="form-check-label" htmlFor="remember_me">
-                                                Remember Me
-                                            </label>
-                                        </div>
-                                        <div className="row justify-content-center">
+                                        <div className="row justify-content-center mt-3">
                                             <button type="submit" className="btn btn-primary col-lg-3">
                                                 Login
                                             </button>
@@ -101,6 +85,7 @@ function Login() {
                 </div>
             </div>
             <Footer />
+            {loading ? <Lines customLoading={loading} time={2000} /> : ""}
         </>
     );
 }

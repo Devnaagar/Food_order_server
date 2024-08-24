@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 const JWT_SECRET = '12345'; 
 
-
 const verifyToken = (req, res, next) => {
     const token = req.headers['authorization'];
     if (!token) {
