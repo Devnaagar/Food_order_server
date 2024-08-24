@@ -7,38 +7,15 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "./sidebarMenu";
 const routes = [
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: <FaHome />,
-  },
-  {
-    path: "/user",
-    name: "Users",
-    icon: <FaUser />,
+  {path: "/dashboard",name: "Dashboard",icon: <FaHome />,},
+  {path: "/user",name: "Users",icon: <FaUser />,
     subRoutes: [
-      {
-        path: "/user/add",
-        name: "Add ",
-        icon: <FaUserPlus />,
-      },
-      {
-        path: "/user/List",
-        name: "List",
-        icon: <FaLock />,
-      },
+      {path: "/user/add",name: "Add ",icon: <FaUserPlus />,},
+      {path: "/user/List",name: "List",icon: <FaLock />,},
     ],
   },
-  {
-    path: "/order",
-    name: "Order",
-    icon: <BsCartCheck />,
-  },
-  {
-    path: "/saved",
-    name: "Saved",
-    icon: <AiFillHeart />,
-  },
+  {path: "/order",name: "Order",icon: <BsCartCheck />,},
+  {path: "/saved",name: "Saved",icon: <AiFillHeart />,},
 ];
 
 const SideBar = ({ children }) => {
@@ -57,7 +34,7 @@ const SideBar = ({ children }) => {
             <AnimatePresence> 
               {isOpen && (
               <motion.h1 variants={showAnimation} initial="hidden" animate="show" exit="hidden" className="logo">
-                  DoSomeCoding
+                  FoodOrder
               </motion.h1>
               )}
             </AnimatePresence>

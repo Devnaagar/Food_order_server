@@ -12,7 +12,7 @@ class Admin {
                     const token = jwt.sign({ adminId: admin._id }, JWT_SECRET, { expiresIn: '1h' });
                     return res.status(200).json({
                         message: "Login successful",
-                        token: token, // Send the JWT token
+                        token: token,
                         redirectUrl: "/dashboard",
                         username: admin.name,
                         admin_id: admin._id

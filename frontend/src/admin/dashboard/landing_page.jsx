@@ -1,7 +1,8 @@
 import "../admin.css";
 import React, { useEffect, useState } from 'react';
-import Toast from '../login/Toast.jsx'; 
-import MyLoader from 'react-fullpage-custom-loader';
+import Toast from '../login/Toast.jsx';
+import { Lines } from 'react-preloaders';
+
 
 function Landing_page() {
     const token = sessionStorage.getItem('token');
@@ -10,13 +11,13 @@ function Landing_page() {
         method: 'GET',
         headers: {
             'Authorization': token,
-        },
+        }
     });
 
-    const [showToast, setShowToast] = useState(false);
-    useEffect(() => {
-        setShowToast(true);
-    }, []);
+    // const [showToast, setShowToast] = useState(false);
+    // useEffect(() => {
+    //     setShowToast(true);
+    // }, []);
     const fadeAndCloseLoader = () => {
         this.setState({startFadeOut: true});
         setTimeout(() => {
@@ -24,10 +25,12 @@ function Landing_page() {
         }, 2000);
     }
 
+ 
     return (
         <> 
+            {/* <Lines  time={1000} />; */}
             <div className="title">Dashboard</div>
-            <Toast  onClose={() => setShowToast(false)} show={showToast} delay={4000} autohide style={{ position: 'fixed', top: '20px', right: '20px', zIndex: '1000' }} message="You have successfully logged in!"  title="Success"/>
+            {/* <Toast  onClose={() => setShowToast(false)} show={showToast} delay={4000} autohide style={{ position: 'fixed', top: '20px', right: '20px', zIndex: '1000' }} message="You have successfully logged in!"  title="Success"/> */}
         </>
     );
 }
