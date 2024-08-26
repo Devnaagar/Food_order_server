@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './admin/login/pagelogin';
 import SideBar from './admin/defaults/sideBar';
 import Landing_page from './admin/dashboard/landing_page';
-import User from './admin/dashboard/user';
+import User from './admin/dashboard/user/user.jsx';
 import Header2 from './admin/defaults/nav';
 import PrivateRoute from './Private.jsx';
 
