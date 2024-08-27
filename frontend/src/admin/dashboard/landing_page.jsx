@@ -1,5 +1,5 @@
 import "../admin.css";
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 function Landing_page() {
     const token = sessionStorage.getItem('token');

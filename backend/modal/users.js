@@ -7,7 +7,11 @@ const UserSchema = new mongoose.Schema({
     phone: { type: String, required: true, minlength: 10, maxlength: 15 },
     password: { type: String, required: true },
     status: { type: Boolean, default: true },
-    createdat: { type: Date, default: Date.now }
+    createdat: { type: Date, default: () => {
+        const now = new Date();
+        const istOffset = 5 * 60 * 60 * 1000 + 30 * 60 * 1000;
+        return new Date(now.getTime() + istOffset);
+    }}
 }, { collection: 'User' });
 
 UserSchema.pre('save', async function (next) {

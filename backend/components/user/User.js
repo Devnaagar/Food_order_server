@@ -8,12 +8,7 @@ class User {
             if (existingUser) {
                 return res.status(400).json({ message: 'Email already exists' });
             }
-            const newUser = new UserModel({
-                name,
-                email,
-                phone,
-                password
-            });
+            const newUser = new UserModel({name,email,phone,password});
             await newUser.save();
             return res.status(201).json({ message: 'User added successfully', userId: newUser._id });
         } catch (error) {
