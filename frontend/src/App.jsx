@@ -6,6 +6,7 @@ import Landing_page from './admin/dashboard/landing_page';
 import User from './admin/dashboard/user/user.jsx';
 import Header2 from './admin/defaults/nav';
 import PrivateRoute from './Private.jsx';
+import User_list from './admin/dashboard/user/list_user.jsx';
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
           <Route path="/admin" element={<Login />}/>
           <Route path="/dashboard" element={<PrivateRoute element={<SideBar><Header2/><Landing_page /></SideBar>} />}/>
           <Route path="/user/add" element={<PrivateRoute element={<SideBar><Header2/><User /></SideBar>} />}/>
+          <Route path="/user/list" element={<PrivateRoute element={<SideBar><Header2/><User_list /></SideBar>} />}/>
         </Routes>
       </BrowserRouter>
     </>

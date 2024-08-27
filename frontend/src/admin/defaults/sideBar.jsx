@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { FaBars, FaHome, FaLock, FaUser } from "react-icons/fa";
+import { FaBars, FaHome, FaUser,FaClipboardList } from "react-icons/fa";
 import { FaUserPlus } from "react-icons/fa";
 import { AiFillHeart } from "react-icons/ai";
 import { BsCartCheck } from "react-icons/bs";
@@ -11,7 +11,7 @@ const routes = [
   {path: "/user",name: "Users",icon: <FaUser />,
     subRoutes: [
       {path: "/user/add",name: "Add ",icon: <FaUserPlus />,},
-      {path: "/user/List",name: "List",icon: <FaLock />,},
+      {path: "/user/list",name: "List",icon: <FaClipboardList />,},
     ],
   },
   {path: "/order",name: "Order",icon: <BsCartCheck />,},
