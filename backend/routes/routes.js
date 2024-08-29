@@ -16,5 +16,7 @@ router.post('/logout', Admin.logout);
 
 //users
 router.post('/addusers',User.adduser);
+router.get('/getusers',User.getusers);
+router.get('/editusers/:id',User.editusers);
 
 export default router;
