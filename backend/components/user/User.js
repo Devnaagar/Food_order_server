@@ -37,7 +37,39 @@ class User {
             console.error("Error fetching user data:", error);
             return res.status(500).json({ message: "Internal server error" });
         }
-    }    
+    }   
+    
+    static updateUser = async (req, res) => {
+        try {
+            const userId = req.params.id;
+            const updateData = req.body;
+            const updatedUser = await UserModel.findByIdAndUpdate(userId, updateData, { new: true });
+
+            if (!updatedUser) {
+                return res.status(404).json({ message: "User not found" });
+            }
+    
+            return res.status(200).json({ message: "User updated successfully", user: updatedUser });
+        } catch (error) {
+            console.error("Error updating user:", error);
+            return res.status(500).json({ message: "Internal server error" });
+        }
+    } 
+
+    static deleteUser=async(req,res)=>{
+        try {
+            const userid = req.params.id;
+            const result = await UserModel.findByIdAndDelete(userid);
+    
+            if (!result) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+            res.status(200).json({ message: 'User deleted successfully' });
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
 }
 
 export default User;

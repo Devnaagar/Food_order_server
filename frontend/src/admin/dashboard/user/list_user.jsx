@@ -6,16 +6,8 @@ function User_list() {
     const [users, setUsers] = useState([]);
     const [modal, setModal] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
-    const [formData, setFormData] = useState({name: '',phone: '',email: ''});
     const [toastVisible, setToastVisible] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
-
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
-
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -29,7 +21,6 @@ function User_list() {
         fetchUsers();
     }, []);
 
-
     const editUsers = async (userId) => {
         try {
             const response = await fetch(`http://localhost:3115/editusers/${userId}`);
@@ -40,25 +31,45 @@ function User_list() {
             console.error('Error fetching user:', error);
         }
     };
-    const handleSubmit = async (e) => {
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setSelectedUser((prevUser) => ({
+            ...prevUser,
+            [name]: value,
+        }));
+    };
+
+
+    const handleSubmit = async (e, userId) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:3115/updateusers', {
+            const response = await fetch(`http://localhost:3115/updateusers/${userId}`, {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(selectedUser),
             });
             
             const data = await response.json();
             
             if (response.ok) {
+                const fetchUsers = async () => {
+                    try {
+                        const response = await fetch('http://localhost:3115/getusers');
+                        const data = await response.json();
+                        setUsers(data);
+                    } catch (error) {
+                        console.error('Error fetching users:', error);
+                    }
+                };
+                fetchUsers();
                 setToastMessage('User updated successfully!');
                 setToastVisible(true);
-                setFormData({ name: '', phone: '', email: '', password: '' });
+                setModal(false);
             } else {
-                setToastMessage(data.message || 'Failed to add user');
+                setToastMessage(data.message || 'Failed to update user');
                 setToastVisible(true);
             }
         } catch (error) {
@@ -68,6 +79,38 @@ function User_list() {
         }
     };
 
+    const deleteUsers = async (userId) => {
+        try {
+            const response = await fetch(`http://localhost:3115/deleteusers/${userId}`, {
+                method: 'POST',
+            });
+            
+            if (response.ok) {
+                const fetchUsers = async () => {
+                    try {
+                        const response = await fetch('http://localhost:3115/getusers');
+                        const data = await response.json();
+                        setUsers(data);
+                    } catch (error) {
+                        console.error('Error fetching users:', error);
+                    }
+                };
+                fetchUsers();
+    
+                setToastMessage('User deleted successfully!');
+                setToastVisible(true);
+            } else {
+                const data = await response.json();
+                setToastMessage(data.message || 'Failed to delete user');
+                setToastVisible(true);
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            setToastMessage('An error occurred. Please try again.');
+            setToastVisible(true);
+        }
+    };
+    
     return (
         <>
             <section>
@@ -101,9 +144,8 @@ function User_list() {
                                                         <td>{user.status ? 'Active' : 'Inactive'}</td>
                                                         <td className='d-flex justify-content-evenly'>
                                                             <button className="btn btn-warning btn-sm" onClick={() => editUsers(user._id)}>Edit</button>
-                                                            <form method='post' action={`http://localhost:3115/deleteusers/${user._id}`}>
-                                                                <button className="btn btn-danger btn-sm ml-2">Delete</button>
-                                                            </form>
+                                                            <button className="btn btn-danger btn-sm ml-2" onClick={()=> deleteUsers(user._id)}>Delete</button>
+                                                            
                                                         </td>
                                                     </tr>
                                                 ))}
@@ -118,7 +160,7 @@ function User_list() {
             </section>
 
             {modal && (
-                <div className="modal show d-block" tabindex="-1">
+                <div className="modal show d-block" tabIndex="-1">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -128,7 +170,7 @@ function User_list() {
                             <div className="modal-body">
                                 {selectedUser ? (
                                     <div>
-                                        <form onSubmit={handleSubmit}>
+                                        <form onSubmit={(e) => handleSubmit(e, selectedUser._id)}>
                                         <div className="row">
                                         <div className="form-group col-lg-6">
                                             <label className="form-label" htmlFor="name"><b>Name :</b></label>
@@ -150,7 +192,6 @@ function User_list() {
                                             <button className="btn btn-primary col-lg-2 p-2" type='submit'><b>Update</b></button>
                                         </div>
                                     </form>
-                                    <ToastComponent show={toastVisible} message={toastMessage} onClose={() => setToastVisible(false)} />
                                     </div>
                                 ) : (
                                     <p>Loading...</p>
@@ -160,6 +201,7 @@ function User_list() {
                     </div>
                 </div>
             )}
+            <ToastComponent show={toastVisible} message={toastMessage} onClose={() => setToastVisible(false)} />
         </>
     );
 }
