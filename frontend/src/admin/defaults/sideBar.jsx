@@ -4,6 +4,7 @@ import { FaUserPlus } from "react-icons/fa";
 import { AiFillHeart } from "react-icons/ai";
 import { BsCartCheck } from "react-icons/bs";
 import { useState } from "react";
+import { GiMeal } from "react-icons/gi";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "./sidebarMenu";
 const routes = [
@@ -14,7 +15,7 @@ const routes = [
       {path: "/user/list",name: "List",icon: <FaClipboardList />,},
     ],
   },
-  {path: "/order",name: "Order",icon: <BsCartCheck />,},
+  {path: "/meal",name: "Meals",icon: <GiMeal />,},
   {path: "/saved",name: "Saved",icon: <AiFillHeart />,},
 ];
 
