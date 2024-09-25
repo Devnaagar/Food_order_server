@@ -2,14 +2,10 @@ import React, { useState } from 'react';
 import ToastComponent from '../../login/Toast.jsx';
 
 const Meal = () => {
-    const [passwordVisible, setPasswordVisible] = useState(false);
     const [formData, setFormData] = useState({name: ''});
     const [toastVisible, setToastVisible] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
 
-    const togglePasswordVisibility = () => {
-        setPasswordVisible(!passwordVisible);
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -30,15 +26,15 @@ const Meal = () => {
         const data = await response.json();
         
         if (response.ok) {
-            setToastMessage('User added successfully!');
+            setToastMessage('Meal added successfully!');
             setToastVisible(true);
             setFormData({ name: ''});
         } else {
-            setToastMessage(data.message || 'Failed to add user');
+            setToastMessage(data.message || 'Failed to add meal');
             setToastVisible(true);
         }
         } catch (error) {
-        console.error('Error adding user:', error);
+        console.error('Error adding meal:', error);
         setToastMessage('An error occurred. Please try again.');
         setToastVisible(true);
         }
@@ -54,7 +50,7 @@ const Meal = () => {
                                 <h2>Add Meal</h2>
                             </div>
                             <div className="card">
-                                <div className="card-body p-2">
+                                <div className="card-body p-4">
                                     <form onSubmit={handleSubmit}>
                                         <div className="row d-flex justify-content-between">
                                             <div className="form-group col-lg-9 d-flex">
